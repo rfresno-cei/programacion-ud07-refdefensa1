@@ -1,9 +1,9 @@
 package modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Libro {
@@ -11,23 +11,19 @@ public class Libro {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String titulo;
-    private String autor;
-    private String isbn;
+    @ManyToMany
+    private List<Autor> autores = new ArrayList<>();
     private int anyoPublicacion;
     private String genero;
     private double precio;
     private int ejemplaresDisponibles;
-    private boolean esBestSeller;
 
-    public Libro(String titulo, String autor, String isbn, int anyoPublicacion, String genero, double precio, int ejemplaresDisponibles, boolean esBestSeller) {
+    public Libro(String titulo, int anyoPublicacion, String genero, double precio, int ejemplaresDisponibles) {
         this.titulo = titulo;
-        this.autor = autor;
-        this.isbn = isbn;
         this.anyoPublicacion = anyoPublicacion;
         this.genero = genero;
         this.precio = precio;
         this.ejemplaresDisponibles = ejemplaresDisponibles;
-        this.esBestSeller = esBestSeller;
     }
 
     public Libro() {
@@ -49,20 +45,12 @@ public class Libro {
         this.titulo = titulo;
     }
 
-    public String getAutor() {
-        return autor;
+    public List<Autor> getAutores() {
+        return autores;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setAutores(List<Autor> autores) {
+        this.autores = autores;
     }
 
     public int getAnyoPublicacion() {
@@ -97,26 +85,15 @@ public class Libro {
         this.ejemplaresDisponibles = ejemplaresDisponibles;
     }
 
-    public boolean isEsBestSeller() {
-        return esBestSeller;
-    }
-
-    public void setEsBestSeller(boolean esBestSeller) {
-        this.esBestSeller = esBestSeller;
-    }
-
     @Override
     public String toString() {
         return "Libro{" +
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
-                ", autor='" + autor + '\'' +
-                ", isbn='" + isbn + '\'' +
                 ", anyoPublicacion=" + anyoPublicacion +
                 ", genero='" + genero + '\'' +
                 ", precio=" + precio +
                 ", ejemplaresDisponibles=" + ejemplaresDisponibles +
-                ", esBestSeller=" + esBestSeller +
                 '}';
     }
 }

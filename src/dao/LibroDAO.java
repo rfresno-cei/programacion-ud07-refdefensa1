@@ -3,6 +3,7 @@ package dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import modelo.Autor;
 import modelo.Libro;
 
 import java.util.HashMap;
@@ -152,5 +153,27 @@ public class LibroDAO {
         List<String> res = query.getResultList();
         em.close();
         return res;
+    }
+
+    public void asignarAutorALibro(int autorId, int libroId) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Autor autor = em.find(Autor.class, autorId);
+        Libro libro = em.find(Libro.class, libroId);
+        if (autor != null && libro != null) {
+            libro.getAutores().add(autor);
+            autor.getLibros().add(libro);
+        }
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    public List<Autor> obtenerAutores(int id) {
+        EntityManager em = emf.createEntityManager();
+        Libro libro = em.find(Libro.class, id);
+        List<Autor> autores = libro.getAutores();
+        autores.toString();
+        em.close();
+        return autores;
     }
 }
